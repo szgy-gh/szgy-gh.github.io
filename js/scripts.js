@@ -43,7 +43,7 @@ var myObj = {
 		"COLUMN username             FORMAT a32",
 		"COLUMN object_name          FORMAT a50",
 		"COLUMN tablespace_name      FORMAT a24",
-		"COLUMN \"Tablespace Name\"  FORMAT a24",
+		"COLUMN \"Tablespace Name\"    FORMAT a24",
 		"COLUMN default_tablespace   FORMAT a24",
 		"COLUMN host                 FORMAT a30",
 		"COLUMN db_link              FORMAT a30",
