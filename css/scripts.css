@@ -1,0 +1,59 @@
+
+
+body {
+	background-color: #666666;
+}
+
+p {
+	background-color: #ffffff;
+	padding: 5px;
+}
+
+#buttons {
+	max-width: 1100px;
+	background-color: #ffffff;
+	padding: 5px;
+	margin-bottom: 5px;
+	}
+
+.btn {
+	background-color: #f4511e;
+	border: none;
+	color: white;
+	padding: 8px 16px;
+	text-align: center;
+	font-size: 16px;
+	margin: 2px;
+	opacity: 0.6;
+	transition: 0.3s;
+	width: 128px;
+	transition: 1.5s;
+	}
+
+.btn:hover {
+	opacity: 1;
+	/* background-color: #44991e; */
+	transition: 0.4s;
+	}
+
+.scriptArea {
+	background-color: #ffffff;
+	padding: 0;
+	margin: 0;
+	height: 500px;
+}
+.scriptArea pre p {
+	margin: 0;
+	border: 0;
+	padding: 5px;
+}
+
+.scriptArea pre {
+	margin: 0;
+	padding: 0;
+}
+
+h2 {
+	color: #ffffff;
+}
+
