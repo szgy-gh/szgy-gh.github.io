@@ -17,7 +17,6 @@ function copyToClipboard() {
 
 function showText(scr) {
 	text = "";
-	document.getElementById("script").innerHTML = scr;
 	for (let i = 0; i < myObj[scr].length; i++) {
 		text += myObj[scr][i] + "<br>";
 	}
