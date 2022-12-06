@@ -217,6 +217,10 @@ var myObj = {
 		"select * from dba_directories order by directory_path;"
 	],
 	
+	"instances": [
+		"ps -ef | grep -vE \"sed|awk|grep|\\+ASM|\\-MGMTDB|\\+APX\" | grep pmon | awk '{print $NF}' | sed 's/ora_pmon_//' | sort"
+	],
+
 	"getDDL": [
 		"set long 1000000",
 		"set trimspool on",
@@ -269,7 +273,30 @@ var myObj = {
 		"ORDER BY  time",
 		";"
 	],
+
+	"New RP": [
+		"WITH",
+		"	databaseName AS (SELECT db_unique_name AS dbName FROM v$database),",
+		"	currentDate AS (SELECT TO_CHAR(sysdate, 'YYYYMMDD') AS currDate FROM dual)",
+		"SELECT	'create restore point \"' || dn.dbName || '_' || cd.currDate || '\" guarantee flashback database;",
+		"FROM	databaseName dn, currentDate cd ;"
+	],
 	
+	"TriggON": [
+		"ALTER TRIGGER afr_object_protection ENABLE;"
+	],
+
+	"TriggOFF": [
+		"ALTER TRIGGER afr_object_protection DISABLE;"
+	],
+
+	"TriggCHECK": [
+		"SET lines 232",
+		"COLUMN trigger_name FORMAT A32",
+		"COLUMN owner FORMAT A16",
+		"SELECT trigger_name , owner , status FROM dba_triggers WHERE trigger_name = 'AFR_OBJECT_PROTECTION';"
+	],
+
 	"context": [
 		"col session_user   for a16",
 		"col session_schema for a16",
@@ -284,10 +311,6 @@ var myObj = {
 		"from dual;"
 	],
 	
-	"instances": [
-		"ps -ef | grep -vE \"sed|awk|grep|\\+ASM|\\-MGMTDB|\\+APX\" | grep pmon | awk '{print $NF}' | sed 's/ora_pmon_//' | sort"
-	],
-
 	"redoMap": [
 		"set pages 999 lines 400",
 		"col h0 format 999",
