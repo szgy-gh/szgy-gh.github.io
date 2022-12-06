@@ -278,7 +278,7 @@ var myObj = {
 		"WITH",
 		"	databaseName AS (SELECT db_unique_name AS dbName FROM v$database),",
 		"	currentDate AS (SELECT TO_CHAR(sysdate, 'YYYYMMDD') AS currDate FROM dual)",
-		"SELECT	'create restore point \"' || dn.dbName || '_' || cd.currDate || '\" guarantee flashback database;",
+		"SELECT	'create restore point \"' || dn.dbName || '_' || cd.currDate || '\" guarantee flashback database;'",
 		"FROM	databaseName dn, currentDate cd ;"
 	],
 	
