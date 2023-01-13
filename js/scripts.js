@@ -89,6 +89,10 @@ var myObj = {
 		"ORDER BY \"Used %\";"
 	],
 	
+	"addDatafile": [
+		"alter tablespace &tspace add datafile ;"
+	],
+	
 	"dFiles": [
 		"SELECT d.tablespace_name",
 		", d.file_id",
@@ -100,10 +104,6 @@ var myObj = {
 		"FROM dba_data_files d",
 		"WHERE d.tablespace_name = upper('&tspace')",
 		"ORDER by d.file_name;"
-	],
-	
-	"addDatafile": [
-		"alter tablespace &tspace add datafile ;"
 	],
 	
 	"tFiles": [
