@@ -137,7 +137,7 @@ var myObj = {
 	],
 	
 	"blocking2": [
-		"select      L1.inst_d",
+		"select      L1.inst_id",
 		"          , L1.sid",
 		"          , ' IS BLOCKING '",
 		"          , L2.inst_id",
