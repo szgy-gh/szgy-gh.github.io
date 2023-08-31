@@ -123,29 +123,32 @@ var myObj = {
 	],
 	
 	"blocking1": [
-		"select    inst_id,",
-		"          blocking_session,",
-		"          sid,",
-		"          serial#,",
-		"          program,",
-		"          event,",
-		"          wait_class,",
-		"          seconds_in_wait",
+		"select      inst_id",
+		"          , blocking_session",
+		"          , sid",
+		"          , serial#",
+		"          , program",
+		"          , event",
+		"          , wait_class",
+		"          , seconds_in_wait",
 		"from      gv$session",
 		"where     blocking_session is not NULL",
 		"order by  blocking_session;"
 	],
 	
 	"blocking2": [
-		"select    l1.sid,",
-		"          ' IS BLOCKING ',",
-		"          l2.sid",
-		"from      gv$lock l1,", 
-		"          gv$lock l2",
-		"where     l1.block =1",
-		"          and l2.request > 0",
-		"          and l1.id1=l2.id1",
-		"          and l1.id2=l2.id2;"
+		"select      L1.inst_d",
+		"          , L1.sid",
+		"          , ' IS BLOCKING '",
+		"          , L2.inst_id",
+		"          , L2.sid",
+		"from        gv$lock L1", 
+		"          , gv$lock L2",
+		"where         L1.block = 1",
+		"          and L2.request > 0",
+		"          and L1.id1=L2.id1",
+		"          and L1.id2=L2.id2",
+		";"
 	],
 	
 	"sessionWait": [
@@ -176,7 +179,7 @@ var myObj = {
 	
 	
 	"user": [
-		"select   username , created , profile , lock_date , expiry_date, default_tablespace",
+		"select   username , created , account_status , profile , lock_date , expiry_date , default_tablespace",
 		"from     dba_users ",
 		"where    username=upper('&1');"
 	],
