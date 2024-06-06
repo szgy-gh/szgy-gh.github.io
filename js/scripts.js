@@ -254,7 +254,7 @@ var myObj = {
 		"col guard_status  for a14",
 		"col force_logging for a14",
 		"set linesize          232",
-		"select d.name , d.db_unique_name , d.database_role , d.log_mode , i.parallel , d.open_mode , d.guard_status , d.force_logging from v$database d, v$instance i ;"
+		"select d.name , d.db_unique_name , d.cdb, d.database_role , d.log_mode , i.parallel , d.open_mode , d.guard_status , d.force_logging from v$database d, v$instance i ;"
 	],
 	
 	"RP": [
