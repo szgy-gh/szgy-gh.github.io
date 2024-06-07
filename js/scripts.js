@@ -254,9 +254,10 @@ var myObj = {
 		"col guard_status  for a14",
 		"col force_logging for a14",
 		"set linesize          232",
+		"col packs         for a18",
 		//"select d.name , d.db_unique_name , d.cdb, d.database_role , d.log_mode , i.parallel , d.open_mode , d.guard_status , d.force_logging from v$database d, v$instance i ;"
 		"select d.name , d.db_unique_name , d.cdb, v.value as packs, d.database_role , d.log_mode , i.parallel , d.open_mode , d.guard_status , d.force_logging",
-		"from v$database d, v$instance i, (select value from v$parameter where name like '%pack%') v"
+		"from v$database d, v$instance i, (select value from v$parameter where name like '%pack%') v ;"
 	],
 	
 	"RP": [
