@@ -257,7 +257,7 @@ var myObj = {
 		"col packs         for a18",
 		//"select d.name , d.db_unique_name , d.cdb, d.database_role , d.log_mode , i.parallel , d.open_mode , d.guard_status , d.force_logging from v$database d, v$instance i ;"
 		"select d.name , d.db_unique_name , d.cdb, v.value as packs, d.database_role , d.log_mode , i.parallel , d.open_mode , d.guard_status , d.force_logging",
-		"from v$database d, v$instance i, (select (select listagg(value,', ') as value from v$parameter where name like '%pack%') v ;"
+		"from v$database d, v$instance i, (select listagg(value,', ') as value from v$parameter where name like '%pack%') v ;"
 	],
 	
 	"RP": [
@@ -266,7 +266,7 @@ var myObj = {
 		"SET VERIFY OFF",
 		"COLUMN scn FOR 999999999999999",
 		"COLUMN Incarn FOR 99",
-		"COLUMN name FOR A25", 
+		"COLUMN name FOR A48", 
 		"COLUMN storage_size FOR 999999999999", 
 		"COLUMN guarantee_flashback_database FOR A3", 
 		"SELECT     database_incarnation# as Incarn",
