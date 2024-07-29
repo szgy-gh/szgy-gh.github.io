@@ -387,7 +387,7 @@ var myObj = {
 
 	"asmDG": [
 		"col redundancy for a12",
-		"select group_number , name , state , type as redundancy , total_mb , free_mb , usable_file_mb , round(usable_file_mb*100/total_mb,1) as free_pcnt",
+		"select group_number , name , state , type as redundancy , total_mb , free_mb , usable_file_mb , round(free_mb*100/total_mb,1) as free_pcnt",
 		"from v$asm_diskgroup",
 		"where state!='DISMOUNTED'",
 		"order by group_number",
