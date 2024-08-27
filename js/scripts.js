@@ -255,7 +255,7 @@ var myObj = {
 		"col force_logging for a14",
 		"set linesize          232",
 		"col packs         for a18",
-		//"select d.name , d.db_unique_name , d.cdb, d.database_role , d.log_mode , i.parallel , d.open_mode , d.guard_status , d.force_logging from v$database d, v$instance i ;"
+		//"select d.name , d.db_unique_name , d.cdb, d.database_role , d.log_mode , i.parallel , d.open_mode , d.guard_status , d.force_logging , d.flashback_on from v$database d, v$instance i ;"
 		"select d.name , d.db_unique_name , i.parallel as RAC , d.cdb, v.value as packs, d.database_role , d.open_mode , d.log_mode , d.force_logging",
 		"from v$database d, v$instance i, (select listagg(value,', ') as value from v$parameter where name = 'control_management_pack_access') v ;"
 	],
