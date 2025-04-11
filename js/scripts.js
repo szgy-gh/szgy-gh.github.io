@@ -2,7 +2,11 @@
 var from,
 	range,
 	text,
-	button;
+	button,
+	objectName;
+
+objectName = "myObj";
+//objectName = "dataguardObj";
 
 // functions
 function copyToClipboard() {
@@ -17,8 +21,8 @@ function copyToClipboard() {
 
 function showText(scr) {
 	text = "";
-	for (let i = 0; i < myObj[scr].length; i++) {
-		text += myObj[scr][i] + "<br>";
+	for (let i = 0; i < this[objectName][scr].length; i++) {
+		text += this[objectName][scr][i] + "<br>";
 	}
 	document.getElementById("script").innerHTML = text;
 	copyToClipboard();
@@ -390,10 +394,131 @@ var myObj = {
 	]
 }
 
+var dataguardObj = {
+	"DG_general_commands": [
+		"recover standby database from service PrimaryDB ;",
+		"",
+		"edit database StandbyDB set state=APPLY-ON;",
+		"show database StandbyDB",
+		"edit database PrimaryDB set state=TRANSPORT-ON;",
+		"show configuration",
+			"",
+			"on standby, if backup only the primary:",
+		"RMAN>CONFIGURE ARCHIVELOG DELETION POLICY TO APPLIED ON STANDBY;",
+		"RMAN>DELETE ARCHIVELOG ALL; ",
+			"",
+			"transport mode commands:",
+		"edit database PrimaryDB set property logxptmode=SYNC;",
+		"edit database StandbyDB set property logxptmode=SYNC;",
+			"",
+		"edit database PrimaryDB set property logxptmode=ASYNC;",
+		"edit database StandbyDB set property logxptmode=ASYNC;",
+			"",
+			"protection mode commands:",
+		"edit configuration set protection mode as maxavailability;",
+		"edit configuration set protection mode as maxperformance;"
+	],
 
-for (var key in myObj) {
-	button = "<button class=\"btn\" onclick=\"showText('" + key + "')\">" + key + "</button>"
-	document.getElementById("buttons").innerHTML += button;
+	"StbyDB_proc_status": [
+		"-- what MRP and RFS processes are doing, which block of which archivelog sequences are being shipped or being applied",
+		"select process, status, thread#, sequence#, block#, blocks from v$managed_standby ;"
+	],
+
+	"Last_applied_log": [
+		"-- Run this query on the standby database to see the last applied archivelog sequence number for each thread.",
+		"SELECT thread#, max(SEQUENCE#) FROM V$ARCHIVED_LOG where APPLIED='YES' group by thread#;"
+	],
+
+	"Archivelog_difference": [
+		"-- Run this on primary database. (not for real time apply)",
+		"ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MON-DD HH24:MI:SS';",
+		"SELECT",
+		"	a.thread#,",
+		"	b.last_seq,",
+		"	a.applied_seq,",
+		"	a.last_app_timestamp,",
+		"	b.last_seq,",
+		"	a.applied_seq ARC_DIFF",
+		"FROM",
+		"	(",
+		"		SELECT",
+		"			thread#,",
+		"			MAX(sequence#) applied_seq,",
+		"			MAX(next_time) last_app_timestamp",
+		"		FROM",
+		"			gv$archived_log",
+		"		WHERE",
+		"			applied = 'YES'",
+		"		GROUP BY",
+		"			thread#",
+		"	) a,",
+		"	(",
+		"		SELECT",
+		"			thread#,",
+		"			MAX (sequence#) last_seq",
+		"		FROM",
+		"			gv$archived_log",
+		"		GROUP BY",
+		"			thread#",
+		"	) b",
+		"WHERE",
+		"	a.thread# = b.thread#",
+		";"
+	]
+//    FROM (SELECT  thread#, MAX(sequence#) applied_seq, MAX(next_time) last_app_timestamp FROM gv$archived_log WHERE applied = 'YES' GROUP BY thread#) a,           (SELECT  thread#, MAX (sequence#) last_seq FROM gv$archived_log GROUP BY thread#) b WHERE a.thread# = b.thread#;
+
+//
+//### Apply/transport lags: ###
+//
+//v$dataguard_stats view will show the general synchronization status of standby database. 
+//Better to use on 11gR2 even with the latest PSU (Check bugs : 13394040, 7119382, 9968073, 7507011, 13045332, 6874522).
+//
+//set lines 200
+//col name format a40
+//col value format a20
+//select * from v$dataguard_stats;
+//
+//
+//
+//### Apply rate: ###
+//
+//To find out the speed of media recovery in a standby database, you can use this query:
+//
+//set lines 200
+//col type format a30
+//col ITEM format a20
+//col comments format a20
+//select * from v$recovery_progress;
+//
+//
+//You can also use below before 11gR2. (Deprecated in 11gR2):
+//
+//SQL> select APPLY_RATE from V$STANDBY_APPLY_SNAPSHOT;
+//
+//
+//### To check Redo apply mode on physical standby database: ###
+//
+//SQL> SELECT RECOVERY_MODE FROM V$ARCHIVE_DEST_STATUS where dest_id=2;
+//
+//
+//### To check what MRP process is waiting: ###
+//
+//select a.event, a.wait_time, a.seconds_in_wait from gv$session_wait a, gv$session b where a.sid=b.sid and b.sid=(select SID from v$session where PADDR=(select PADDR from v$bgprocess where NAME='MRP0'));
+//
+//
+//### Archive Lag Histogram: ###
+//
+//The  V$STANDBY_EVENT_HISTOGRAM view came with 11gR2 and shows the historical occurance of archive lags in terms of seconds. For example following output shows that in 07/01/2013 archive lag reached 5 hours and in 06/15/2013 gap was 22 hours which was resolved after more than a week.
+//
+//SQL> col name format a10
+//SQL> select * from  V$STANDBY_EVENT_HISTOGRAM;
+//
+//	]
 }
 
 // end data
+
+for (var key in this[objectName]) {
+	button = "<button class=\"btn\" onclick=\"showText('" + key + "')\">" + key + "</button>"
+	document.getElementById("buttons").innerHTML += button;
+}
