@@ -258,7 +258,10 @@ var myObj = {
 		"col guard_status  for a14",
 		"col force_logging for a14",
 		"set linesize          232",
-		"select d.name , d.db_unique_name , d.database_role , d.log_mode , i.parallel , d.open_mode , d.guard_status , d.force_logging from v$database d, v$instance i ;"
+		"col packs         for a18",
+		//"select d.name , d.db_unique_name , d.cdb, d.database_role , d.log_mode , i.parallel , d.open_mode , d.guard_status , d.force_logging , d.flashback_on from v$database d, v$instance i ;"
+		"select d.name , d.db_unique_name , i.parallel as RAC , d.cdb, v.value as packs, d.database_role , d.open_mode , d.log_mode , d.force_logging",
+		"from v$database d, v$instance i, (select listagg(value,', ') as value from v$parameter where name = 'control_management_pack_access') v ;"
 	],
 	
 	"RP": [
@@ -267,7 +270,7 @@ var myObj = {
 		"SET VERIFY OFF",
 		"COLUMN scn FOR 999999999999999",
 		"COLUMN Incarn FOR 99",
-		"COLUMN name FOR A25", 
+		"COLUMN name FOR A48", 
 		"COLUMN storage_size FOR 999999999999", 
 		"COLUMN guarantee_flashback_database FOR A3", 
 		"SELECT     database_incarnation# as Incarn",
@@ -295,7 +298,13 @@ var myObj = {
 		"col current_schema for a16",
 		"col proxy_id       for a16",
 		"col user           for a16",
-		"select 	sys_context('USERENV','SESSION_USER') 	as session_user,",
+		"col con_name       for a12",
+		"col con_id         for a3",
+		"col db_name        for a12",
+		"select 	sys_context('USERENV','CON_NAME')		as con_name,",
+		"		sys_context('USERENV','CON_ID')			as con_id,",
+		"		sys_context('USERENV','DB_NAME')		as db_name,",
+		"		sys_context('USERENV','SESSION_USER') 	as session_user,",
 		"		sys_context('USERENV','SESSION_SCHEMA') as session_schema,",
 		"		sys_context('USERENV','CURRENT_SCHEMA') as current_schema,",
 		"		sys_context('USERENV','PROXY_USER') 	as proxy_id,",
@@ -381,7 +390,12 @@ var myObj = {
 	],
 
 	"asmDG": [
-		"select group_number , name, state , total_mb , free_mb from v$asm_diskgroup ;"
+		"col redundancy for a12",
+		"select group_number , name , state , type as redundancy , total_mb , free_mb , usable_file_mb , round(free_mb*100/total_mb,1) as free_pcnt",
+		"from v$asm_diskgroup",
+		"where state!='DISMOUNTED'",
+		"order by group_number",
+		";"
 	],
 
 	"asmDISK": [
