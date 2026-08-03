@@ -489,7 +489,7 @@ var dataguardObj = {
 	],
 
 	"ASM_power": [
-		"alter diskgroup ..."
+		"alter diskgroup data_dg rebalance power &power ;"
 	]
 //    FROM (SELECT  thread#, MAX(sequence#) applied_seq, MAX(next_time) last_app_timestamp FROM gv$archived_log WHERE applied = 'YES' GROUP BY thread#) a,           (SELECT  thread#, MAX (sequence#) last_seq FROM gv$archived_log GROUP BY thread#) b WHERE a.thread# = b.thread#;
 
