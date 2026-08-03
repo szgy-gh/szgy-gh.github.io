@@ -405,7 +405,20 @@ var myObj = {
 		"col path for  a32",
 		"select label , name , path , os_mb , total_mb , free_mb , group_number as grp , disk_number as dnum , mount_status , header_status , mode_status , state",
 		"from v$asm_disk order by grp , name;"
+	],
+
+	"ASM_operations": [
+		"set lines 232 pages 5000",
+		"col PATH for a32",
+		"col name for a32",
+		"col error_code for a32",
+		"select * from v$asm_operation ;"
+	],
+
+	"ASM_power": [
+		"alter diskgroup data_dg rebalance power &power ;"
 	]
+
 }
 
 var dataguardObj = {
@@ -478,19 +491,8 @@ var dataguardObj = {
 		"WHERE",
 		"	a.thread# = b.thread#",
 		";"
-	],
-
-	"ASM_operations": [
-		"set lines 232 pages 5000",
-		"col PATH for a32",
-		"col name for a32",
-		"col error_code for a32",
-		"select * from v$asm_operation ;"
-	],
-
-	"ASM_power": [
-		"alter diskgroup data_dg rebalance power &power ;"
 	]
+	
 //    FROM (SELECT  thread#, MAX(sequence#) applied_seq, MAX(next_time) last_app_timestamp FROM gv$archived_log WHERE applied = 'YES' GROUP BY thread#) a,           (SELECT  thread#, MAX (sequence#) last_seq FROM gv$archived_log GROUP BY thread#) b WHERE a.thread# = b.thread#;
 
 //
